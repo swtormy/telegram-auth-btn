@@ -1,50 +1,32 @@
-# React + TypeScript + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
+# Telegram Auth Button for React
+This repository provides a simple component for integrating Telegram Login into your React application. The component allows users to authenticate via their Telegram account, making it easy to add social login functionality to your app.
 
 ```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+import "./App.css";
+import TelegramLogin, { TelegramUser } from "./components/telegram-auth-btn";
+
+function App() {
+  const handleTelegramAuth = (user: TelegramUser) => {
+    console.log("User authenticated:", user);
+  };
+
+  return (
+    <TelegramLogin
+      botUsername="my-auth-bot-name"
+      onAuth={handleTelegramAuth}
+    />
+  );
+}
+
+export default App;
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Component Props
+- `botUsername (string)`: The username of your Telegram bot.
+- `onAuth (function)`: The function that handles the authenticated user's data.
+- `buttonSize (optional, string)`: Size of the login button. Accepts "large", "medium", or "small". Default is "large".
+- `cornerRadius (optional, number)`: The corner radius of the button. Default is 20.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+## Important Notes
+Domain Restrictions: If you encounter the error "Bot domain invalid" when running the app, this is expected behavior. The Telegram Login widget cannot be tested on localhost. You need to set up a valid domain for testing.
+Global Declaration: The onTelegramAuth function is declared globally in the global.d.ts file. This ensures that TypeScript recognizes it as a global function.
